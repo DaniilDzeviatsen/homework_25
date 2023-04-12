@@ -9,7 +9,5 @@ public abstract class Show {
     public BigDecimal rating;
     public int numOfVotes;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 }
