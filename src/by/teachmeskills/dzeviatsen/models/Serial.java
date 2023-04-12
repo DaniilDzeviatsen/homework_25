@@ -8,19 +8,26 @@ public class Serial extends Show{
     public int numOfSeasons;
 
     public Serial(String name, int productionYear, String country, BigDecimal rating, int numOfVotes, int lastEpisodeYear, int numOfEpisodes, int numOfSeasons) {
-        super();
+        this.name = name;
+        this.productionYear = productionYear;
+        this.country = country;
+        this.rating = rating;
+        this.numOfVotes = numOfVotes;
+        this.lastEpisodeYear = lastEpisodeYear;
+        this.numOfEpisodes = numOfEpisodes;
+        this.numOfSeasons = numOfSeasons;
     }
 
     public String toString() {
         return "Show{" +
-                "name='" + name + '\'' +
-                ", productionYear='" + productionYear + '\'' +
-                ", country='" + country + '\'' +
-                ", rating=" + rating +
-                ", numOfVotes=" + numOfVotes +'\''+
-                ", lastEpisodeYear"+lastEpisodeYear+'\''+
-                ",numOfEpisodes"+numOfEpisodes+'\''+
-                ",numOfSeasons"+
+                "name= " + name +
+                ", productionYear= " + productionYear +
+                ", country= " + country +
+                ", rating= " + rating +
+                ", numOfVotes= " + numOfVotes +
+                ", lastEpisodeYear " + lastEpisodeYear +
+                ",numOfEpisodes " + numOfEpisodes +
+                ",numOfSeasons " + numOfSeasons +
                 '}';
     }
 }
