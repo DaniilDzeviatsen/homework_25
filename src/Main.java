@@ -49,6 +49,18 @@ public class Main {
                         String countryCode = sc.nextLine();
                         showService.handleCountryFilter(countryCode);
                     }
+                    case 2 -> {
+                        System.out.println("Enter rating from");
+                        String rateFrom = sc.nextLine();
+                        System.out.println("Enter rating to");
+                        String rateTo = sc.nextLine();
+                        showService.handleRatingFilter(rateFrom, rateTo);
+                    }
+                    case 3 -> {
+                        System.out.println("Enter year");
+                        int year = Integer.valueOf(sc.nextLine());
+                        showService.handleYearFilter(year);
+                    }
                 }
             }
         } while (true);

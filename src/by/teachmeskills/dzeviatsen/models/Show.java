@@ -22,6 +22,46 @@ public abstract class Show {
         }
     }
 
+    /*private static class PredicateByRatingFrom implements Predicate<Show> {
+        private final Pattern pattern;
+
+        private PredicateByRatingFrom(String query) {
+            this.pattern = Pattern.compile("\\b" + Pattern.quote(query),
+                    Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
+
+
+        @Override
+        public boolean test(Show show) {
+            return pattern.matcher(show.getRating().toString()).find();
+        }
+    }
+
+    private static class PredicateByRatingTo implements Predicate<Show> {
+        private final Pattern pattern;
+        public PredicateByRatingTo(String query) {
+            this.pattern = Pattern.compile("\\b"+Pattern.quote(query),
+                    Pattern.UNICODE_CHARACTER_CLASS|Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CHARACTER_CLASS);
+        }
+        @Override
+        public boolean test(Show show) {
+            return pattern.matcher(show.getName().toString()).find();
+        }
+    }*/
+
+    private static class PredicateByYear implements Predicate<Show> {
+        private final Pattern pattern;
+
+        private PredicateByYear(String query) {
+            this.pattern = Pattern.compile("\\b" + Pattern.quote(query),
+                    Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        }
+
+        @Override
+        public boolean test(Show show) {
+            return pattern.matcher(String.valueOf(show.productionYear)).find();
+        }
+    }
+
     private static class ComparatorByName implements Comparator<Show> {
 
         @Override
@@ -98,6 +138,10 @@ public abstract class Show {
 
     public int getNumOfVotes() {
         return numOfVotes;
+    }
+
+    public static Predicate<Show> predicateByYear(String query) {
+        return new PredicateByYear(query);
     }
 
     public static Predicate<Show> predicateByCountry(String query) {
