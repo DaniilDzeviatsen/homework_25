@@ -8,6 +8,20 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public abstract class Show {
+    private static class PredicateByVotes implements Predicate<Show> {
+        private final int numFrom;
+        private final int numTo;
+
+        public PredicateByVotes(String numFrom, String numTo) {
+            this.numFrom = Integer.valueOf(numFrom);
+            this.numTo = Integer.valueOf(numTo);
+        }
+
+        public boolean test(Show show) {
+            return show.getNumOfVotes() > numFrom && show.getNumOfVotes() < numTo;
+        }
+    }
+
     private static class PredicateByCountry implements Predicate<Show> {
         private final Pattern pattern;
 
@@ -22,31 +36,21 @@ public abstract class Show {
         }
     }
 
-    /*private static class PredicateByRatingFrom implements Predicate<Show> {
-        private final Pattern pattern;
+    private static class PredicateByRating implements Predicate<Show> {
+        private final BigDecimal rateFrom;
+        private final BigDecimal rateTo;
 
-        private PredicateByRatingFrom(String query) {
-            this.pattern = Pattern.compile("\\b" + Pattern.quote(query),
-                    Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS);
-
+        private PredicateByRating(String rateFrom, String rateTo) {
+            this.rateFrom = BigDecimal.valueOf(Double.parseDouble(rateFrom));
+            this.rateTo = BigDecimal.valueOf(Double.parseDouble(rateTo));
+        }
 
         @Override
         public boolean test(Show show) {
-            return pattern.matcher(show.getRating().toString()).find();
+            return show.getRating().compareTo(rateTo) == -1 && show.getRating().compareTo(rateFrom) == 1;
         }
     }
 
-    private static class PredicateByRatingTo implements Predicate<Show> {
-        private final Pattern pattern;
-        public PredicateByRatingTo(String query) {
-            this.pattern = Pattern.compile("\\b"+Pattern.quote(query),
-                    Pattern.UNICODE_CHARACTER_CLASS|Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CHARACTER_CLASS);
-        }
-        @Override
-        public boolean test(Show show) {
-            return pattern.matcher(show.getName().toString()).find();
-        }
-    }*/
 
     private static class PredicateByYear implements Predicate<Show> {
         private final Pattern pattern;
@@ -138,6 +142,14 @@ public abstract class Show {
 
     public int getNumOfVotes() {
         return numOfVotes;
+    }
+
+    public static Predicate<Show> predicateByVotes(String numFrom, String numTo) {
+        return new PredicateByVotes(numFrom, numTo);
+    }
+
+    public static Predicate<Show> predicateByRate(String rateFrom, String rateTo) {
+        return new PredicateByRating(rateFrom, rateTo);
     }
 
     public static Predicate<Show> predicateByYear(String query) {

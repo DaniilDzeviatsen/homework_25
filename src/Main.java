@@ -54,12 +54,19 @@ public class Main {
                         String rateFrom = sc.nextLine();
                         System.out.println("Enter rating to");
                         String rateTo = sc.nextLine();
-                        showService.handleRatingFilter(rateFrom, rateTo);
+                        showService.handleRateFilter(rateFrom, rateTo);
                     }
                     case 3 -> {
                         System.out.println("Enter year");
                         int year = Integer.valueOf(sc.nextLine());
                         showService.handleYearFilter(year);
+                    }
+                    case 4 -> {
+                        System.out.println("Enter number of votes from");
+                        String numFrom = sc.nextLine();
+                        System.out.println("Enter rating to");
+                        String numTo = sc.nextLine();
+                        showService.handleVotesFilter(numFrom, numTo);
                     }
                 }
             }

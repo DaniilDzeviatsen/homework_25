@@ -3,7 +3,6 @@ package by.teachmeskills.dzeviatsen.ShowService;
 import by.teachmeskills.dzeviatsen.models.Show;
 import by.teachmeskills.dzeviatsen.repository.ShowRepository;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -76,10 +75,17 @@ public class ShowService {
         }
     }
 
-    public void handleRatingFilter(String rateFrom, String rateTo) {
+    public void handleRateFilter(String rateFrom, String rateTo) {
         List<Show> shows = showRepository.listShows();
-        shows.removeIf(e -> e.getRating().compareTo(BigDecimal.valueOf(Double.parseDouble(rateFrom))) == -1);
-        shows.removeIf(e -> e.getRating().compareTo(BigDecimal.valueOf(Double.parseDouble(rateTo))) == 1);
+        shows.removeIf(Show.predicateByRate(rateFrom, rateTo).negate());
+        for (Show show : shows) {
+            System.out.println(show.toString());
+        }
+    }
+
+    public void handleVotesFilter(String numFrom, String numTo) {
+        List<Show> shows = showRepository.listShows();
+        shows.removeIf(Show.predicateByVotes(numFrom, numTo).negate());
         for (Show show : shows) {
             System.out.println(show.toString());
         }
