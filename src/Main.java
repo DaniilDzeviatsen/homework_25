@@ -68,6 +68,11 @@ public class Main {
                         String numTo = sc.nextLine();
                         showService.handleVotesFilter(numFrom, numTo);
                     }
+                    case 5 -> {
+                        System.out.println("Enter line");
+                        String query = sc.nextLine();
+                        showService.handleTitleFilter(query);
+                    }
                 }
             }
         } while (true);

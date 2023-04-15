@@ -8,6 +8,20 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public abstract class Show {
+    private static class PredicateByTitle implements Predicate<Show> {
+        private final Pattern pattern;
+
+        private PredicateByTitle(String query) {
+            this.pattern = Pattern.compile("\\b" + Pattern.quote(query), Pattern.UNICODE_CHARACTER_CLASS
+                    | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        }
+
+        @Override
+        public boolean test(Show show) {
+            return pattern.matcher(show.getName().toString()).find();
+        }
+    }
+
     private static class PredicateByVotes implements Predicate<Show> {
         private final int numFrom;
         private final int numTo;
@@ -26,7 +40,7 @@ public abstract class Show {
         private final Pattern pattern;
 
         private PredicateByCountry(String query) {
-            this.pattern = Pattern.compile("\\b" + Pattern.quote(query),
+            this.pattern = Pattern.compile("\\b" + Pattern.quote(query) + "\\b",
                     Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
         }
 
@@ -142,6 +156,10 @@ public abstract class Show {
 
     public int getNumOfVotes() {
         return numOfVotes;
+    }
+
+    public static Predicate<Show> predicateByTitle(String query) {
+        return new PredicateByTitle(query);
     }
 
     public static Predicate<Show> predicateByVotes(String numFrom, String numTo) {

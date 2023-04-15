@@ -90,6 +90,14 @@ public class ShowService {
             System.out.println(show.toString());
         }
     }
+
+    public void handleTitleFilter(String query) {
+        List<Show> shows = showRepository.listShows();
+        shows.removeIf(Show.predicateByTitle(query).negate());
+        for (Show show : shows) {
+            System.out.println(show.toString());
+        }
+    }
 }
 
 
