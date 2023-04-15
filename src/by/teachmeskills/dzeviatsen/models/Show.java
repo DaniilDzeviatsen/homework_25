@@ -132,11 +132,12 @@ public abstract class Show {
         }
     }
 
-    public String name;
-    public int productionYear;
-    public String country;
-    public BigDecimal rating;
-    public int numOfVotes;
+    private String name;
+    private int productionYear;
+    private String country;
+    private BigDecimal rating;
+    private int numOfVotes;
+
 
     public String getName() {
         return name;

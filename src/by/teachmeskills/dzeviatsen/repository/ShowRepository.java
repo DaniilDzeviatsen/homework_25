@@ -14,16 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowRepository {
-    final Path SERIES_PATH = Path.of(
+    private final Path SERIES_PATH = Path.of(
             "series.csv");
-    final Path FILMS_PATH = Path.of("films.csv");
+    private final Path FILMS_PATH = Path.of("films.csv");
 
     public List<Show> listShows() {
-        List<Film> listOfFilms = getFilmsList(FILMS_PATH);
-        List<Serial> listOfSeries = getSeriesList(SERIES_PATH);
         List<Show> listOfShows = new ArrayList<>();
-        listOfShows.addAll(listOfSeries);
-        listOfShows.addAll(listOfFilms);
+        listOfShows.addAll(getFilmsList(FILMS_PATH));
+        listOfShows.addAll(getSeriesList(SERIES_PATH));
         return listOfShows;
     }
 
