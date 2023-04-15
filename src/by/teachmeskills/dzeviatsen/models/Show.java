@@ -101,7 +101,7 @@ public abstract class Show {
 
         @Override
         public int compare(Show o1, Show o2) {
-            return o1.rating.compareTo(o2.rating);
+            return o1.getRating().compareTo(o2.getRating());
         }
     }
 
