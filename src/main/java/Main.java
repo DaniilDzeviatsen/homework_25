@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
+        log.info("Программа запущена");
         ShowRepository showRepository = new ShowRepository();
         ShowService showService = new ShowService(showRepository);
         try {
