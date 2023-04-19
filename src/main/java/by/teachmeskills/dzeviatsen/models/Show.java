@@ -8,19 +8,6 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public abstract class Show {
-    private static class PredicateByTitle implements Predicate<Show> {
-        private final Pattern pattern;
-
-        private PredicateByTitle(String query) {
-            this.pattern = Pattern.compile("\\b" + Pattern.quote(query), Pattern.UNICODE_CHARACTER_CLASS
-                    | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-        }
-
-        @Override
-        public boolean test(Show show) {
-            return pattern.matcher(show.getName().toString()).find();
-        }
-    }
 
     private static class PredicateByVotes implements Predicate<Show> {
         private final int numFrom;
@@ -46,7 +33,7 @@ public abstract class Show {
 
         @Override
         public boolean test(Show show) {
-            return pattern.matcher(show.getCountry().toString()).find();
+            return pattern.matcher(show.getCountry()).find();
         }
     }
 
@@ -67,16 +54,15 @@ public abstract class Show {
 
 
     private static class PredicateByYear implements Predicate<Show> {
-        private final Pattern pattern;
+        private final int year;
 
         private PredicateByYear(String query) {
-            this.pattern = Pattern.compile("\\b" + Pattern.quote(query),
-                    Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+            this.year = Integer.valueOf(query);
         }
 
         @Override
         public boolean test(Show show) {
-            return pattern.matcher(String.valueOf(show.productionYear)).find();
+            return year == show.getProductionYear();
         }
     }
 
@@ -122,16 +108,6 @@ public abstract class Show {
         return comparators;
     }
 
-    private static class TwoFactorComparator {
-        public void sorter() {
-            List<Comparator> comparators = getComparatorsList();
-            for (Comparator comparator : comparators) {
-                Comparator<Show> tt = comparator.thenComparing(comparator);
-            }
-
-        }
-    }
-
     private String name;
     private int productionYear;
     private String country;
@@ -157,10 +133,6 @@ public abstract class Show {
 
     public int getNumOfVotes() {
         return numOfVotes;
-    }
-
-    public static Predicate<Show> predicateByTitle(String query) {
-        return new PredicateByTitle(query);
     }
 
     public static Predicate<Show> predicateByVotes(String numFrom, String numTo) {

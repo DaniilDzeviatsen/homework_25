@@ -1,11 +1,14 @@
 package by.teachmeskills.dzeviatsen.ShowService;
 
+import by.teachmeskills.dzeviatsen.Predicators.PredicateByTitle;
 import by.teachmeskills.dzeviatsen.models.Show;
 import by.teachmeskills.dzeviatsen.repository.ShowRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class ShowService {
     private final ShowRepository showRepository;
@@ -14,90 +17,67 @@ public class ShowService {
         this.showRepository = Objects.requireNonNull(showRepository);
     }
 
-    public List<Show> sorter(Comparator comparator) {
+    public List<Show> getSortedListOfShows(String command) {
+        Comparator<Show> comparator = null;
+        switch (command) {
+            case "by name" -> comparator = Show.BY_NAME;
+            case "by rating" -> comparator = Show.BY_RATING;
+            case "by year" -> comparator = Show.BY_YEAR;
+            case "by votes" -> comparator = Show.BY_VOTES;
+        }
+        return getSortedShows(comparator);
+    }
+
+    private List<Show> getSortedShows(Comparator<Show> comparator) {
         List<Show> shows = showRepository.listShows();
-        shows.sort(Show.BY_NAME.reversed());
+        shows.sort(comparator);
         return shows;
     }
 
-    public void handleSortByName() {
-        List<Show> shows = showRepository.listShows();
-        shows.sort(Show.BY_NAME);
-        for (Show show : shows) {
-            System.out.println(show.toString());
+    public List<Show> getFilteredListOfShows(String command, String query) {
+        Predicate<Show> predicate = null;
+        switch (command) {
+            case "by title" -> predicate = new PredicateByTitle(query);
         }
+        return getFilteredShows(predicate);
     }
 
-    public void handleSortByRating() {
+    private List<Show> getFilteredShows(Predicate<Show> predicate) {
         List<Show> shows = showRepository.listShows();
-        shows.sort(Show.BY_RATING);
+        List<Show> tmpShows = new ArrayList<>();
         for (Show show : shows) {
-            System.out.println(show.toString());
+            if (predicate.test(show)) {
+                tmpShows.add(show);
+            }
         }
+        return tmpShows;
     }
 
-    public void handleSortByYear() {
-        List<Show> shows = showRepository.listShows();
-        shows.sort(Show.BY_YEAR);
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
-    }
-
-    public void handleSortByVotes() {
-        List<Show> shows = showRepository.listShows();
-        shows.sort(Show.BY_VOTES);
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
-    }
-
-    public void handleTwoFactorComparison() {
-        List<Show> shows = showRepository.listShows();
-        for (Show show : shows) {
-            show.getComparatorsList();
-        }
-    }
-
-    public void handleCountryFilter(String countryCode) {
+    public List<Show> handleCountryFilter(String countryCode) {
         List<Show> shows = showRepository.listShows();
         shows.removeIf(Show.predicateByCountry(countryCode).negate());
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
+        return shows;
     }
 
-    public void handleYearFilter(int year) {
+    public List<Show> handleYearFilter(int year) {
         List<Show> shows = showRepository.listShows();
         shows.removeIf(Show.predicateByYear(String.valueOf(year)).negate());
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
+        return shows;
     }
 
-    public void handleRateFilter(String rateFrom, String rateTo) {
+    public List<Show> handleRateFilter(String rateFrom, String rateTo) {
         List<Show> shows = showRepository.listShows();
         shows.removeIf(Show.predicateByRate(rateFrom, rateTo).negate());
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
+        return shows;
     }
 
-    public void handleVotesFilter(String numFrom, String numTo) {
+    public List<Show> handleVotesFilter(String numFrom, String numTo) {
         List<Show> shows = showRepository.listShows();
         shows.removeIf(Show.predicateByVotes(numFrom, numTo).negate());
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
+        return shows;
     }
 
-    public void handleTitleFilter(String query) {
-        List<Show> shows = showRepository.listShows();
-        shows.removeIf(Show.predicateByTitle(query).negate());
-        for (Show show : shows) {
-            System.out.println(show.toString());
-        }
-    }
+
 }
 
 
