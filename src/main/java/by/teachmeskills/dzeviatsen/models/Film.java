@@ -1,15 +1,13 @@
 package by.teachmeskills.dzeviatsen.models;
 
-import java.math.BigDecimal;
-
 public class Film extends Show {
     private final String name;
     private final int productionYear;
-    private final BigDecimal rating;
+    private final double rating;
     private final String country;
     private final int numOfVotes;
 
-    public Film(String name, int productionYear, String country, BigDecimal rating, int numOfVotes) {
+    public Film(String name, int productionYear, String country, double rating, int numOfVotes) {
         validateName(name);
         validateRating(rating);
         validateYear(productionYear);
@@ -33,7 +31,7 @@ public class Film extends Show {
     }
 
     @Override
-    public BigDecimal getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -59,9 +57,9 @@ public class Film extends Show {
         }
     }
 
-    public static void validateRating(BigDecimal rating) {
-        if (rating.compareTo(BigDecimal.ZERO) == -1
-                || rating.compareTo(BigDecimal.TEN) == 1) {
+    public static void validateRating(double rating) {
+        if (rating <= 0
+                || rating >= 10) {
             throw new IllegalArgumentException("Rating must have value between 0  and 10");
         }
     }

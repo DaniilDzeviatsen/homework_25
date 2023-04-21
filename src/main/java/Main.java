@@ -1,122 +1,94 @@
+import by.teachmeskills.dzeviatsen.Predicators.PredicateByCountry;
+import by.teachmeskills.dzeviatsen.Predicators.PredicateByRating;
+import by.teachmeskills.dzeviatsen.Predicators.PredicateByTitle;
 import by.teachmeskills.dzeviatsen.ShowService.ShowService;
 import by.teachmeskills.dzeviatsen.models.Show;
 import by.teachmeskills.dzeviatsen.repository.ShowRepository;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class Main {
-    private static final List<String> commands = List.of("by name", "by rating", "by year", "by votes");
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(Main.class);
+    private static final Scanner sc = new Scanner(System.in);
+
+
     public static void main(String[] args) {
         log.info("Программа запущена");
         ShowRepository showRepository = new ShowRepository();
         ShowService showService = new ShowService(showRepository);
-        try {
+
+        /*try {
             List<Show> showlist = showRepository.listShows();
             for (Show show : showlist) {
                 System.out.println(show.toString());
             }
         } catch (Exception e) {
             System.out.println("ERROR");
+        }*/
+        List<Predicate<Show>> filters = requestFilters();
+        List<Comparator<Show>> sorting = requestSorting();
+        List<Show> shows = showService.query(filters, sorting);
+        if (shows.isEmpty()) {
+            System.out.println("Ничего не найдено");
+
+        } else {
+            for (Show show : shows) {
+                System.out.println(show.toString());
+            }
         }
-        System.out.println("Which  sorting do you  want to implement?");
-        Scanner sc = new Scanner(System.in);
-        do {
-            System.out.println("Choose operation");
-            System.out.println("1) Sorting");
-            System.out.println("2) Filtration");
-            int operation = Integer.parseInt(sc.nextLine());
-            List<Show> shows = showRepository.listShows();
-            if (operation == 1) {
-                System.out.println("Write type of sorting");
-                String typeOfSorting = sc.nextLine();
-                switch (typeOfSorting) {
-                    case "by name" -> {
-                        shows = showService.getSortedListOfShows(commands.get(0));
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case "by rating" -> {
-                        shows = showService.getSortedListOfShows(commands.get(1));
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case "by year" -> {
-                        shows = showService.getSortedListOfShows(commands.get(2));
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case "by votes" -> {
-                        shows = showService.getSortedListOfShows(commands.get(3));
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case "without sorting" -> showRepository.listShows();
-                }
-            }
-            if (operation == 2) {
-                System.out.println("Choose filters");
-                System.out.println("1)Country");
-                System.out.println("2)Rating");
-                System.out.println("3)Year");
-                System.out.println("4)Number of votes");
-                System.out.println("5)Key letters");
-                int filter = Integer.parseInt(sc.nextLine());
-                switch (filter) {
-                    case 1 -> {
-                        System.out.println("Enter country code");
-                        String countryCode = sc.nextLine();
-                        shows = showService.handleCountryFilter(countryCode);
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case 2 -> {
-                        System.out.println("Enter rating from");
-                        String rateFrom = sc.nextLine();
-                        System.out.println("Enter rating to");
-                        String rateTo = sc.nextLine();
-                        shows = showService.handleRateFilter(rateFrom, rateTo);
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case 3 -> {
-                        System.out.println("Enter year");
-                        int year = Integer.valueOf(sc.nextLine());
-                        shows = showService.handleYearFilter(year);
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case 4 -> {
-                        System.out.println("Enter number of votes from");
-                        String numFrom = sc.nextLine();
-                        System.out.println("Enter number of votes to");
-                        String numTo = sc.nextLine();
-                        shows = showService.handleVotesFilter(numFrom, numTo);
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                    case 5 -> {
-                        System.out.println("Enter line");
-                        String query = sc.nextLine();
-                        shows = showService.getFilteredListOfShows("by title", query);
-                        for (Show show : shows) {
-                            System.out.println(show.toString());
-                        }
-                    }
-                }
-            }
-        } while (true);
     }
 
+    private static List<Predicate<Show>> requestFilters() {
+        List<Predicate<Show>> filters = new ArrayList<>();
+        System.out.println("""
+                Add filter:
+                  byCountry <countryCode>             
+                  byRating <from> <to>
+                  byTitle <query>
+                  end""");
+        while (true) {
+            String command = sc.nextLine();
+            String[] parts = command.split(" ");
+            if (parts[0].equals("end")) return filters;
+            Predicate<Show> filter = switch (parts[0]) {
+                case "byCountry" -> new PredicateByCountry(parts[1]);
+                case "byRating" -> new PredicateByRating(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+                case "byTitle" -> new PredicateByTitle(parts[1]);
+                default -> throw new IllegalArgumentException("Unknown command");
+            };
+            filters.add(filter);
+        }
+    }
+
+    private static List<Comparator<Show>> requestSorting() {
+        List<Comparator<Show>> sorting = new ArrayList<>();
+        System.out.println("""
+                Add sorting:
+                  byVotes
+                  byRating
+                  byYear
+                  byTitle
+                  end""");
+        while (true) {
+            String command = sc.nextLine();
+            if (command.equals("end")) return sorting;
+            Comparator<Show> comparator = switch (command) {
+                case "byVotes" -> Show.BY_VOTES;
+                case "byRating" -> Show.BY_RATING;
+                case "byYear" -> Show.BY_YEAR;
+                case "byTitle" -> Show.BY_NAME;
+                default -> throw new IllegalArgumentException("Unknown command");
+            };
+            sorting.add(comparator);
+        }
+    }
 }
+
+
+
 
 

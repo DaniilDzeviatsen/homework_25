@@ -6,7 +6,6 @@ import by.teachmeskills.dzeviatsen.models.Show;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,7 +65,7 @@ public class ShowRepository {
         String name = parts[0];
         int productionYear = Integer.valueOf(parts[1]);
         String country = parts[2];
-        BigDecimal rating = BigDecimal.valueOf(Double.parseDouble(parts[3]));
+        Double rating = Double.parseDouble(parts[3]);
         int numOfVotes = Integer.valueOf(parts[4]);
         return new Film(name, productionYear, country, rating, numOfVotes);
     }
@@ -76,7 +75,7 @@ public class ShowRepository {
         String name = parts[0];
         int productionYear = Integer.valueOf(parts[1]);
         String country = parts[3];
-        BigDecimal rating = BigDecimal.valueOf(Double.parseDouble(parts[6]));
+        double rating = Double.parseDouble(parts[6]);
         int numOfVotes = Integer.valueOf(parts[7]);
         int lastEpisodeYear = Integer.valueOf(parts[2]);
         int numOfEpisodes = Integer.valueOf(parts[5]);

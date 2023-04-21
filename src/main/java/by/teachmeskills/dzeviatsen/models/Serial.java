@@ -1,7 +1,5 @@
 package by.teachmeskills.dzeviatsen.models;
 
-import java.math.BigDecimal;
-
 public class Serial extends Show {
     private final String name;
     private final int productionYear;
@@ -9,10 +7,10 @@ public class Serial extends Show {
     private final int numOfEpisodes;
     private final int numOfSeasons;
     private final String country;
-    private final BigDecimal rating;
+    private final double rating;
     private final int numOfVotes;
 
-    public Serial(String name, int productionYear, String country, BigDecimal rating, int numOfVotes, int lastEpisodeYear, int numOfEpisodes, int numOfSeasons) {
+    public Serial(String name, int productionYear, String country, double rating, int numOfVotes, int lastEpisodeYear, int numOfEpisodes, int numOfSeasons) {
         validateName(name);
         validateRating(rating);
         validateYear(productionYear);
@@ -47,7 +45,7 @@ public class Serial extends Show {
     }
 
     @Override
-    public BigDecimal getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -80,9 +78,9 @@ public class Serial extends Show {
         }
     }
 
-    public static void validateRating(BigDecimal rating) {
-        if (rating.compareTo(BigDecimal.ZERO) == -1
-                || rating.compareTo(BigDecimal.TEN) == 1) {
+    public static void validateRating(double rating) {
+        if (rating < 0
+                || rating > 10) {
             throw new IllegalArgumentException("Rating must have value between 0  and 10");
         }
     }
