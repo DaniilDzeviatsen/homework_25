@@ -45,8 +45,8 @@ public class ShowService {
             while (sortingIterator.hasNext()) {
                 Comparator<Show> next = sortingIterator.next();
                 finalSorting = finalSorting.thenComparing(next);
+                shows.sort(finalSorting);
             }
-            shows.sort(finalSorting);
         }
     }
 }
