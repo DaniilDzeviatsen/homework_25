@@ -122,6 +122,26 @@ public class ShowServiceTest {
     }
 
     @Test
+    void shouldFilterByRatingBorders() {
+        List<Comparator<Show>> list = new ArrayList<>();
+        List<Predicate<Show>> predicatorsList = new ArrayList<>();
+        double rateFrom = 8.9;
+        double rateTo = 8.9;
+        predicatorsList.add(new PredicateByRating(rateFrom, rateTo));
+
+        List<Show> shows = new ArrayList<>();
+        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
+        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        Mockito.when(repository.listShows())
+                .thenReturn(shows);
+
+        List<Show> shows1 = service.query(predicatorsList, list);
+        List<Show> expected = new ArrayList<>();
+        expected.add(shows.get(0));
+        assertIterableEquals(shows1, expected);
+    }
+
+    @Test
     void shouldFilterByCountry() {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> predicatorsList = new ArrayList<>();
