@@ -17,7 +17,6 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.mockito.Mockito.when;
 
 public class ShowServiceTest {
     ShowService service;
@@ -91,7 +90,7 @@ public class ShowServiceTest {
         List<Show> shows = new ArrayList<>();
         shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
         shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
-        when(repository.listShows())
+        Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
@@ -113,7 +112,7 @@ public class ShowServiceTest {
         List<Show> shows = new ArrayList<>();
         shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
         shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
-        when(repository.listShows())
+        Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
