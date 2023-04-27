@@ -21,6 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 public class ShowServiceTest {
     ShowService service;
     ShowRepository repository;
+    private final List<Show> SHOWS1 = List.of(
+            new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5),
+            new Film("Зеленая миля", 1999, "US", 9.1, 127148)
+    );
 
     @BeforeEach
     void setUp() {
@@ -33,9 +37,7 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_YEAR);
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
         assertEquals(shows, shows1);
@@ -46,9 +48,7 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_NAME);
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
         assertEquals(shows, shows1);
@@ -59,9 +59,7 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_RATING);
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
         assertEquals(shows, shows1);
@@ -87,9 +85,7 @@ public class ShowServiceTest {
         String title = "тя";
         predicatorsList.add(new PredicateByTitle(title));
 
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
@@ -109,9 +105,7 @@ public class ShowServiceTest {
         double rateTo = 9.0;
         predicatorsList.add(new PredicateByRating(rateFrom, rateTo));
 
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
@@ -129,9 +123,7 @@ public class ShowServiceTest {
         double rateTo = 8.9;
         predicatorsList.add(new PredicateByRating(rateFrom, rateTo));
 
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
@@ -148,9 +140,7 @@ public class ShowServiceTest {
         String country = "US";
         predicatorsList.add(new PredicateByCountry(country));
 
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
@@ -168,9 +158,7 @@ public class ShowServiceTest {
         String country = "GB";
         predicatorsList.add(new PredicateByCountry(country));
 
-        List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        List<Show> shows = SHOWS1;
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
