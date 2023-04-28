@@ -20,15 +20,6 @@ public class Main {
         log.info("Программа запущена");
         ShowRepository showRepository = new ShowRepository();
         ShowService showService = new ShowService(showRepository);
-
-        /*try {
-            List<Show> showlist = showRepository.listShows();
-            for (Show show : showlist) {
-                System.out.println(show.toString());
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR");
-        }*/
         List<Predicate<Show>> filters = requestFilters();
         List<Comparator<Show>> sorting = requestSorting();
         List<Show> shows = showService.query(filters, sorting);

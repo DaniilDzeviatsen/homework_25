@@ -16,15 +16,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class ShowServiceTest {
     ShowService service;
     ShowRepository repository;
-    private final List<Show> SHOWS1 = List.of(
-            new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5),
-            new Film("Зеленая миля", 1999, "US", 9.1, 127148)
-    );
+
+    private final Show SHOW1 = new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5);
+    private final Show SHOW2 = new Film("Зеленая миля", 1999, "US", 9.1, 127148);
 
     @BeforeEach
     void setUp() {
@@ -37,10 +35,15 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_YEAR);
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
-        assertEquals(shows, shows1);
+        List<Show> expectedShows = new ArrayList<>();
+        expectedShows.add(SHOW2);
+        expectedShows.add(SHOW1);
+        assertEquals(shows1, expectedShows);
     }
 
     @Test
@@ -48,10 +51,15 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_NAME);
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW2);
+        shows.add(SHOW1);
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
-        assertEquals(shows, shows1);
+        List<Show> expectedShows = new ArrayList<>();
+        expectedShows.add(SHOW1);
+        expectedShows.add(SHOW2);
+        assertEquals(shows1, expectedShows);
     }
 
     @Test
@@ -59,10 +67,15 @@ public class ShowServiceTest {
         List<Comparator<Show>> list = new ArrayList<>();
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_RATING);
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW2);
+        shows.add(SHOW1);
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
-        assertEquals(shows, shows1);
+        List<Show> expectedShows = new ArrayList<>();
+        expectedShows.add(SHOW1);
+        expectedShows.add(SHOW2);
+        assertEquals(shows1, expectedShows);
     }
 
     @Test
@@ -71,11 +84,14 @@ public class ShowServiceTest {
         List<Predicate<Show>> listPredicates = new ArrayList<>();
         list.add(Show.BY_VOTES);
         List<Show> shows = new ArrayList<>();
-        shows.add(new Serial("Во все тяжкие", 2008, "US", 8.9, 533325, 2013, 62, 5));
-        shows.add(new Film("Зеленая миля", 1999, "US", 9.1, 127148));
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows()).thenReturn(shows);
         List<Show> shows1 = service.query(listPredicates, list);
-        assertEquals(shows, shows1);
+        List<Show> expectedShows = new ArrayList<>();
+        expectedShows.add(SHOW2);
+        expectedShows.add(SHOW1);
+        assertEquals(shows1, expectedShows);
     }
 
     @Test
@@ -85,13 +101,15 @@ public class ShowServiceTest {
         String title = "тя";
         predicatorsList.add(new PredicateByTitle(title));
 
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
         List<Show> expected = new ArrayList<>();
-        expected.add(shows.get(0));
+        expected.add(SHOW1);
 
         assertEquals(shows1, expected);
 
@@ -105,14 +123,16 @@ public class ShowServiceTest {
         double rateTo = 9.0;
         predicatorsList.add(new PredicateByRating(rateFrom, rateTo));
 
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
         List<Show> expected = new ArrayList<>();
-        expected.add(shows.get(0));
-        assertIterableEquals(shows1, expected);
+        expected.add(SHOW1);
+        assertEquals(shows1, expected);
     }
 
     @Test
@@ -123,14 +143,16 @@ public class ShowServiceTest {
         double rateTo = 8.9;
         predicatorsList.add(new PredicateByRating(rateFrom, rateTo));
 
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
         List<Show> expected = new ArrayList<>();
-        expected.add(shows.get(0));
-        assertIterableEquals(shows1, expected);
+        expected.add(SHOW1);
+        assertEquals(shows1, expected);
     }
 
     @Test
@@ -140,14 +162,16 @@ public class ShowServiceTest {
         String country = "US";
         predicatorsList.add(new PredicateByCountry(country));
 
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
         List<Show> expected = new ArrayList<>();
-        expected.add(shows.get(0));
-        expected.add(shows.get(1));
+        expected.add(SHOW1);
+        expected.add(SHOW2);
         assertEquals(shows1, expected);
     }
 
@@ -158,12 +182,48 @@ public class ShowServiceTest {
         String country = "GB";
         predicatorsList.add(new PredicateByCountry(country));
 
-        List<Show> shows = SHOWS1;
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
         Mockito.when(repository.listShows())
                 .thenReturn(shows);
 
         List<Show> shows1 = service.query(predicatorsList, list);
         List<Show> expected = new ArrayList<>();
         assertEquals(shows1, expected);
+    }
+
+    @Test
+    void shouldSortByTwoCriteria() {
+        List<Comparator<Show>> list = new ArrayList<>();
+        List<Predicate<Show>> preedicatorsList = new ArrayList<>();
+        list.add(Show.BY_RATING);
+        list.add(Show.BY_YEAR);
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW2);
+        shows.add(SHOW1);
+        Mockito.when(repository.listShows()).thenReturn(shows);
+        List<Show> shows1 = service.query(preedicatorsList, list);
+        List<Show> expectedShows = new ArrayList<>();
+        expectedShows.add(SHOW1);
+        expectedShows.add(SHOW2);
+        assertEquals(shows1, expectedShows);
+    }
+
+    @Test
+    void shouldFilterByTwoCriteria() {
+        List<Comparator<Show>> list = new ArrayList<>();
+        List<Predicate<Show>> predicatorsList = new ArrayList<>();
+        String country = "US";
+        String title = "wrnvejr";
+        predicatorsList.add(new PredicateByCountry(country));
+        predicatorsList.add(new PredicateByTitle(title));
+        List<Show> shows = new ArrayList<>();
+        shows.add(SHOW1);
+        shows.add(SHOW2);
+        Mockito.when(repository.listShows()).thenReturn(shows);
+        List<Show> shows1 = service.query(predicatorsList, list);
+        List<Show> expectedShows = new ArrayList<>();
+        assertEquals(shows1, expectedShows);
     }
 }

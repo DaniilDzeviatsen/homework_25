@@ -33,7 +33,7 @@ public abstract class Show {
 
         @Override
         public int compare(Show o1, Show o2) {
-            return Integer.compare(o1.numOfVotes, o2.numOfVotes);
+            return Integer.compare(o1.getNumOfVotes(), o2.getNumOfVotes());
         }
     }
 
