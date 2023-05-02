@@ -16,15 +16,15 @@ public class ShowService {
         this.showRepository = Objects.requireNonNull(showRepository);
     }
 
-    public List<Show> query(
-            List<Predicate<Show>> filters,
-            List<Comparator<Show>> sorting
-    ) {
-        List<Show> shows = showRepository.listShows();
-        applyFilters(shows, filters);
-        applySorting(shows, sorting);
-        return shows;
-    }
+   public List<Show> query(
+           List<Predicate<Show>> filters,
+           List<Comparator<Show>> sorting
+   ) {
+       List<Show> shows = showRepository.listShows();
+       applyFilters(shows, filters);
+       applySorting(shows, sorting);
+       return shows;
+   }
 
     private void applyFilters(List<Show> shows, List<Predicate<Show>> filters) {
         if (!filters.isEmpty()) {
